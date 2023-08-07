@@ -12,10 +12,12 @@ public class HelloController {
         return "Hello Developer Joseph";
     }
 
+
     @GetMapping("/hello-bean")
     public HelloBean bean(){
         return new HelloBean("Hello Developer") ;
     }
+
 
     @GetMapping("/hello-bean/{name}")
     public HelloBean beanPathVariable(@PathVariable String name){
