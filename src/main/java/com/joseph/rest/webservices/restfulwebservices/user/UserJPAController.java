@@ -1,33 +1,34 @@
 package com.joseph.rest.webservices.restfulwebservices.user;
 
 import com.joseph.rest.webservices.restfulwebservices.exception.UserNotFoundException;
+import com.joseph.rest.webservices.restfulwebservices.jpa.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-public class UserController {
+public class UserJPAController {
 
-    private UserDataAccessObjectService userDao;
+    private UserRepository repository;
 
-    public UserController(UserDataAccessObjectService userDao) {
-        this.userDao = userDao;
+    public UserJPAController(UserRepository repository) {
+        this.repository = repository;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/jpa/users")
     public List<User> getAllUsers(){
-        return userDao.findAll();
+        return repository.findAll();
     }
 
-    @GetMapping("/users/{id}")
-    public User getUserById(@PathVariable Integer id){
-     User user = userDao.findOne(id);
-        if(user==null)
+    @GetMapping("/jpa/users/{id}")
+    public Optional<User> getUserById(@PathVariable Integer id){
+     Optional<User> user = repository.findById(id);
+        if(user.isEmpty())
             throw new UserNotFoundException("id:"+id);
-
         return user;
     }
 
@@ -37,9 +38,9 @@ public class UserController {
 //    }
 
     //To return correct response status
-    @PostMapping("/users")
+    @PostMapping("/jpa/users")
     public ResponseEntity<User> createUserWithCorrectResponseStatus(@RequestBody User user){
-        User savedUser = userDao.save(user);
+        User savedUser = repository.save(user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedUser.getId())
@@ -47,10 +48,18 @@ public class UserController {
         return ResponseEntity.created(location).build();
     }
 
-
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/jpa/users/{id}")
     public void deleteUserById(@PathVariable Integer id){
-        userDao.deleteById(id);
+        repository.deleteById(id);
+    }
+
+    @GetMapping("/jpa/users/{id}/posts")
+    public List<Post> retrievePostForUser(@PathVariable Integer id){
+            Optional<User> user = repository.findById(id);
+            if(user.isEmpty())
+                throw new UserNotFoundException("id:"+id);
+            return user.get().getPosts();
+
     }
 
 }

@@ -1,11 +1,29 @@
 package com.joseph.rest.webservices.restfulwebservices.user;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Generated;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
+import java.time.LocalDate;
+import java.util.List;
+
+@Entity(name = "user_details")
 public class User {
+
+    @Id
+    @GeneratedValue
     private Integer id;
     private String name;
     private LocalDate date;
+
+    @OneToMany( mappedBy = "user")
+    @JsonIgnore
+    private List<Post> posts;
+
+
 
     public User() {
     }
@@ -38,6 +56,14 @@ public class User {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     @Override
