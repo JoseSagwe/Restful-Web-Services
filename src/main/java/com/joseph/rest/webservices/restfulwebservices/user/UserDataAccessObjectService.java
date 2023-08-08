@@ -21,8 +21,6 @@ public class UserDataAccessObjectService {
         users.add(new User(++usersCount, "Birisio", LocalDate.now().minusYears(20)));
     }
 
-
-
     public List<User> findAll(){
         return users;
     }
