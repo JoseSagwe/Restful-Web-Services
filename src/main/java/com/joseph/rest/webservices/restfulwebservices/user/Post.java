@@ -10,6 +10,7 @@ public class Post {
     @GeneratedValue
     private Integer id;
 
+
     private String Description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,6 +31,14 @@ public class Post {
 
     public void setDescription(String description) {
         Description = description;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
