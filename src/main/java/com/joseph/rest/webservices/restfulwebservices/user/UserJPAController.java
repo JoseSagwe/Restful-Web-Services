@@ -24,8 +24,6 @@ public class UserJPAController {
         this.repository = repository;
         this.postRepository = postRepository;
     }
-
-
     @GetMapping("/jpa/users")
     public List<User> getAllUsers(){
         return repository.findAll();
