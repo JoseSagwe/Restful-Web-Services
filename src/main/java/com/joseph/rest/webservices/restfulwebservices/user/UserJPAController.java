@@ -25,6 +25,7 @@ public class UserJPAController {
         this.postRepository = postRepository;
     }
 
+
     @GetMapping("/jpa/users")
     public List<User> getAllUsers(){
         return repository.findAll();
@@ -37,6 +38,7 @@ public class UserJPAController {
             throw new UserNotFoundException("id:"+id);
         return user;
     }
+
 
 //    @PostMapping("/users")
 //    public void createUser(@RequestBody User user){

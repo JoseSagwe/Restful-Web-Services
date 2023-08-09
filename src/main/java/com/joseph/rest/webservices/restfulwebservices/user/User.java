@@ -23,8 +23,6 @@ public class User {
     @JsonIgnore
     private List<Post> posts;
 
-
-
     public User() {
     }
 
